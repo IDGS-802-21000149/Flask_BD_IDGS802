@@ -8,5 +8,5 @@ class Alumnos(db.Model):
     nombre=db.Column(db.String(50))
     apaterno=db.Column(db.String(50))
     email =db.Column(db.String(50))
-    create_database=db.Column(db.DateTime,default=datetime.datetime.now)
+    create_date=db.Column(db.DateTime,default=datetime.datetime.now)
     

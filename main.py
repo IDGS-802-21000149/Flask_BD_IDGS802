@@ -3,19 +3,36 @@ from flask import flash
 from config import DevelopmentConfig
 from flask_wtf.csrf import CSRFProtect
 import forms
+from models import Alumnos
 from models import db
 
 app=Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 csrf=CSRFProtect()
 
-@app.route("/")
+@app.route("/index",methods=["GET","POST"])
 def index():
- return render_template("index.html")
+   alum_form=forms.UserForm2(request.form)
+   if request.method == "POST" :
+      alum=Alumnos(nombre=alum_form.nombre.data,
+                  apaterno=alum_form.apaterno.data,
+                  email=alum_form.email.data)
+      #INSERT INTO alumnos VALUES()
+      db.session.add(alum)
+      db.session.commit()
+   return render_template("index.html",form=alum_form)
+
+@app.route("/ABC_Completo",methods=["GET","POST"])
+def ABCompleto():
+   alum_form=forms.UserForm2(request.form)
+   alumno=Alumnos.query.all()
+
+   return render_template("ABC_Completo.html",alumno=alumno)
 
 @app.errorhandler(404)
 def page_not_found(e):
  return render_template("404.html"),404
+
 
 
 
